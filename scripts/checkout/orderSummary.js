@@ -3,32 +3,28 @@ import { products, getProduct } from '../../data/products.js';
 import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
+import { renderPaymentSummary } from './paymentSummary.js';
 
-/*const today = dayjs();
-const deliveryDate = today.add(7, 'days');
-console.log(deliveryDate.format('dddd, MMMM D'));*/
+
 
 export function renderOrderSummary() {
   let cartSummaryHTML = '';
 
-  //cart.forEach((cartItemx) => {
-  //  console.log(cartItemx);
-  //});
-  //console.log('=========================');
+  
   
   cart.forEach((cartItem) => {
-      //console.log(cartItem);
+      
       const productId = cartItem.productId;
       
       const matchingProduct = getProduct(productId);
   
     const deliveryOptionId = cartItem.deliveryOptionId; 
-    //console.log(cartItem);
+    
 
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
     
-      //console.log(deliveryOption);
+      
       const today = dayjs();
       const deliveryDate = today.add(
         deliveryOption.deliveryDays,
@@ -127,12 +123,7 @@ export function renderOrderSummary() {
       document.querySelector('.js-order-summary')
           .innerHTML = cartSummaryHTML;
   
-      //function refreshCart() {
-        //const cartQuantity = calculateCartQuantity();
-  
-        //document.querySelector('.js-return-to-home-link')
-       //   .innerHTML = `${cartQuantity} items`;
-      //}
+     
   
       document.querySelectorAll('.js-delete-link')
       .forEach((link) => {
@@ -145,6 +136,8 @@ export function renderOrderSummary() {
             )
   
             container.remove();
+
+            renderPaymentSummary();
   
             refreshCart();
           });
@@ -154,10 +147,10 @@ export function renderOrderSummary() {
         .forEach((element) => {
            element.addEventListener('click', () => {
             const {productId, deliveryOptionId} = element.dataset;
-            //console.log('inside delivery option event handler productId and deliveryOptionId');
-            //console.log({productId, deliveryOptionId});
+           
             updateDeliveryOPtion(productId, deliveryOptionId);
             renderOrderSummary();
+            renderPaymentSummary();
            });
         });
   
@@ -165,9 +158,7 @@ export function renderOrderSummary() {
       .forEach((link) => {
         link.addEventListener('click', () => {
           const productId = link.dataset.productId;
-          //console.log(productId);
-  
-          
+           
         const container = document.querySelector(
           `.js-cart-item-container-${productId}`
         );
