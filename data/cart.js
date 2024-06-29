@@ -17,8 +17,6 @@ function saveToStorage() {
 
 export function addToCart(productId) {
     let matchingItem;
-    console.log('inside add to cart before pushing');
-    console.log(cart);
 
     cart.forEach((cartItem) => {
       if (productId === cartItem.productId) {
@@ -38,11 +36,7 @@ export function addToCart(productId) {
       
     }
 
-    //console.log('inside addToCart');
-    //console.log(cart);
     saveToStorage();
-    console.log('inside add to cart after pushing');
-    console.log(cart);
 }
 
 export function removeFromCart(productId) {
