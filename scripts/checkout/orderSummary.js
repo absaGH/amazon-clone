@@ -5,12 +5,24 @@ import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
 
+function refreshCart() {
+  const cartQuantity = calculateCartQuantity();
 
+  //document.querySelector('.js-return-to-home-link')
+  //  .innerHTML = `${cartQuantity} items`;
+  const returnToHomeLinkElement = document.querySelector('.js-return-to-home-link');
+    if (returnToHomeLinkElement) {
+      returnToHomeLinkElement.innerHTML = `${cartQuantity} items`;
+    }
+}
 
 export function renderOrderSummary() {
   let cartSummaryHTML = '';
 
-  
+  //const cartQuantity = calculateCartQuantity();
+
+  //document.querySelector('.js-return-to-home-link')
+  //  .innerHTML = `${cartQuantity} items`;
   
   cart.forEach((cartItem) => {
       
@@ -35,7 +47,7 @@ export function renderOrderSummary() {
       );
   
       cartSummaryHTML += `
-       <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
+       <div class="cart-item-container js-cart-item-container js-cart-item-container-${matchingProduct.id}">
               <div class="delivery-date">
                 Delivery date: ${dateString}
               </div>
@@ -51,7 +63,8 @@ export function renderOrderSummary() {
                   <div class="product-price">
                     $${formatCurrency(matchingProduct.priceCents)}
                   </div>
-                  <div class="product-quantity">
+                  <div class="product-quantity 
+                      js-product-quantity-${matchingProduct.id}">
                     <span>
                       Quantity: <span class="quantity-label  js-quantity-label-${matchingProduct.id}">${cartItem.quantity}</span>
                     </span>
@@ -63,7 +76,7 @@ export function renderOrderSummary() {
                       data-product-id="${matchingProduct.id}">
                       Save
                     </span>
-                    <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
+                    <span class="delete-quantity-link link-primary js-delete-link js-delete-link-${matchingProduct.id}" data-product-id="${matchingProduct.id}">
                       Delete
                     </span>
                   </div>
@@ -131,14 +144,15 @@ export function renderOrderSummary() {
             const productId = link.dataset.productId;
             removeFromCart(productId);
             
-            const container = document.querySelector(
+            /*const container = document.querySelector(
               `.js-cart-item-container-${productId}`
             )
   
-            container.remove();
+            container.remove();*/
 
+            //renderOrderSummary();
             renderPaymentSummary();
-  
+            
             refreshCart();
           });
       });
@@ -164,8 +178,9 @@ export function renderOrderSummary() {
         );
         container.classList.add('is-editing-quantity');
         });
-  
-        refreshCart();
+        
+        //renderOrderSummary();
+        //refreshCart();
       });
   
       document.querySelectorAll('.js-save-link')
@@ -196,21 +211,26 @@ export function renderOrderSummary() {
             `.js-quantity-label-${productId}`
           );
           quantityLabel.innerHTML = newQuantity;
-    
+          
+          //renderOrderSummary();
           refreshCart();
         });
       });
 }
 
-function refreshCart() {
+/*export function refreshCart() {
   const cartQuantity = calculateCartQuantity();
 
-  document.querySelector('.js-return-to-home-link')
-    .innerHTML = `${cartQuantity} items`;
-}
+  //document.querySelector('.js-return-to-home-link')
+  //  .innerHTML = `${cartQuantity} items`;
+  const returnToHomeLinkElement = document.querySelector('.js-return-to-home-link');
+    if (returnToHomeLinkElement) {
+      returnToHomeLinkElement.innerHTML = `${cartQuantity} items`;
+    }
+}*/
 
 
-
+//renderOrderSummary();
 refreshCart();
 
 

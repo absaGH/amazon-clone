@@ -57,6 +57,11 @@ export function removeFromCart(productId) {
   cart = newCart;
 
   saveToStorage();
+  const container = document.querySelector(
+    `.js-cart-item-container-${productId}`
+  )
+
+  container.remove();
 }
 
 export function calculateCartQuantity() {
