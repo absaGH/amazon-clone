@@ -58,6 +58,8 @@ class Clothing extends Product{
 export let products = [];
 
 export function loadProducts(fun) {
+  console.log('inside produjct.js');
+  console.log(typeof fun);
   const xhr = new XMLHttpRequest();
 
   xhr.addEventListener('load', () => {
@@ -70,7 +72,10 @@ export function loadProducts(fun) {
     
     console.log('load products');
 
-    fun();
+    if (!(typeof fun === 'undefined')) {
+      fun();
+    }
+      
   });
 
   xhr.open('GET', 'https://supersimplebackend.dev/products');
