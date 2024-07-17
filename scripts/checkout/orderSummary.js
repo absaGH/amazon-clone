@@ -4,6 +4,8 @@ import { formatCurrency } from '../utils/money.js';
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions, getDeliveryOption } from '../../data/deliveryOptions.js';
 import { renderPaymentSummary } from './paymentSummary.js';
+import { renderCheckoutHeader } from './checkoutHeader.js';
+import { calculateDeliveryDate } from '../../data/deliveryOptions.js';
 
 function refreshCart() {
   const cartQuantity = calculateCartQuantity();
@@ -30,10 +32,10 @@ export function renderOrderSummary() {
       
       const matchingProduct = getProduct(productId);
   
-    const deliveryOptionId = cartItem.deliveryOptionId; 
+      const deliveryOptionId = cartItem.deliveryOptionId; 
     
 
-    const deliveryOption = getDeliveryOption(deliveryOptionId);
+      const deliveryOption = getDeliveryOption(deliveryOptionId);
 
     
       
@@ -97,11 +99,13 @@ export function renderOrderSummary() {
       let html = '';
   
       deliveryOptions.forEach((deliveryOption) => {
-        const today = dayjs();
+        /*const today = dayjs();
         const deliveryDate = today.add(
           deliveryOption.deliveryDays,
           'days'
-        );
+        );*/
+        const deliveryDate = calculateDeliveryDate(deliveryOption);
+
         const dateString = deliveryDate.format(
           'dddd, MMMM D'
         );
@@ -150,10 +154,11 @@ export function renderOrderSummary() {
   
             container.remove();*/
 
-            //renderOrderSummary();
+            renderOrderSummary();
             renderPaymentSummary();
             
-            refreshCart();
+            //refreshCart();
+            renderCheckoutHeader();
           });
       });
   
@@ -212,8 +217,10 @@ export function renderOrderSummary() {
           );
           quantityLabel.innerHTML = newQuantity;
           
-          //renderOrderSummary();
-          refreshCart();
+          renderOrderSummary();
+          renderPaymentSummary();
+          //refreshCart();
+          renderCheckoutHeader();
         });
       });
 }
@@ -231,6 +238,7 @@ export function renderOrderSummary() {
 
 
 //renderOrderSummary();
-refreshCart();
+//refreshCart();
+renderCheckoutHeader();
 
 
