@@ -19,6 +19,7 @@ export function loadFromStorage() {
 
 function saveToStorage() {
   localStorage.setItem('cart', JSON.stringify(cart));
+ 
 }
 
 export function addToCart(productId) {
@@ -51,17 +52,23 @@ export function removeFromCart(productId) {
   cart.forEach((cartItem) => {
     if (cartItem.productId !== productId) {
       newCart.push(cartItem);
+    
     }
   });
 
   cart = newCart;
+  
 
   saveToStorage();
+  
   const container = document.querySelector(
     `.js-cart-item-container-${productId}`
   )
-
-  container.remove();
+ 
+  if (container) {
+    container.remove();
+  }
+  
 }
 
 export function calculateCartQuantity() {
@@ -90,21 +97,20 @@ export function updateQuantity(productId, newQuantity) {
 
 export function updateDeliveryOPtion(productId, deliveryOptionId) {
   let matchingItem;
-  //console.log('inside UpdateDeliveryOption');
-  //console.log({productId, deliveryOptionId});
-  //console.log(cart);
   cart.forEach((cartItem) => {
     if (productId === cartItem.productId) {
       matchingItem = cartItem;
     }
-    //console.log('inside UpdateDeliveryOption mathcingItem');
-    //console.log(matchingItem);
+ 
   });
+
+  if(!matchingItem){
+    return;
+  }
 
   matchingItem.deliveryOptionId = deliveryOptionId;
 
   saveToStorage();
-  //console.log(cart);
 }
 
 export function loadCart(fun) {

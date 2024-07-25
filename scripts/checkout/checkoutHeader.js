@@ -3,8 +3,7 @@ import { calculateCartQuantity } from "../../data/cart.js";
 export function renderCheckoutHeader() {
     const cartQuantity = calculateCartQuantity();
 
-  //document.querySelector('.js-return-to-home-link')
-  //  .innerHTML = `${cartQuantity} items`;
+ 
 
   const checkoutHeaderHTML = `
       <div class="header-content">
@@ -26,12 +25,12 @@ export function renderCheckoutHeader() {
       </div>
     `;
 
-    /*const returnToHomeLinkElement = document.querySelector('.js-return-to-home-link');
-    if (returnToHomeLinkElement) {
-      returnToHomeLinkElement.innerHTML = `${cartQuantity} items`;
-    }*/
-
-    document.querySelector('.js-checkout-header')
-        .innerHTML = checkoutHeaderHTML;
-
+   
+    const checkoutHeaderElement = document.querySelector('.js-checkout-header');
+    if (checkoutHeaderElement) {
+        checkoutHeaderElement.innerHTML = checkoutHeaderHTML;
+    } 
 }
+
+// Ensure that the function runs after the DOM is fully loaded
+//document.addEventListener('DOMContentLoaded', renderCheckoutHeader);
