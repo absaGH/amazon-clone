@@ -49,7 +49,6 @@ class Cart {
     }
 
     removeFromCart(productId) {
-        //console.log(productId);
         const newCart = [];
       
         this.cartItems.forEach((cartItem) => {
@@ -61,15 +60,11 @@ class Cart {
         this.cartItems = newCart;
       
         this.saveToStorage();
-        
-          const container = document.querySelector(
-            `.js-cart-item-container-${productId}`
-          );
-
-          if(container) {
-            container.remove();
-          }
-          
+        const container = document.querySelector(
+          `.js-cart-item-container-${productId}`
+        )
+      
+        container.remove();
       }
    
       calculateCartQuantity() {
@@ -105,17 +100,13 @@ class Cart {
           }
         });
       
-        if(!matchingItem){
-          return;
-        }
-
         matchingItem.deliveryOptionId = deliveryOptionId;
       
         this.saveToStorage();
       }
 }
 
-export const cart = new Cart('cart-oop');
+const cart = new Cart('cart-oop');
 const businessCart = new Cart('cart-business');
 
 

@@ -12,12 +12,13 @@ export function getProduct(productId) {
       return matchingProduct;
 }
 
-class Product {
+export class Product {
   id;
   image;
   name;
   rating;
   priceCents;
+  keywords;
 
   constructor(productDetails) {
     this.id = productDetails.id;
@@ -25,6 +26,7 @@ class Product {
     this.name = productDetails.name;
     this.rating = productDetails.rating;
     this.priceCents = productDetails.priceCents;
+    this.keywords = productDetails.keywords;
   }
 
   getStarsUrl(){
@@ -40,7 +42,7 @@ class Product {
   }
 }
 
-class Clothing extends Product{
+export class Clothing extends Product{
   sizeChartLink;
 
   constructor(productDetails) {
@@ -50,7 +52,25 @@ class Clothing extends Product{
 
   extraInfoHTML(){
     return `
-      <a href="${this.sizeChartLink}" targe="_blank">Size chart</a>
+      <a href="${this.sizeChartLink}" target="_blank">Size chart</a>
+    `;
+  }
+}
+
+export class Appliance extends Product {
+  instructionsLink;
+  warrantyLink;
+
+  constructor(productDetails) {
+    super(productDetails);
+    this.instructionsLink = productDetails.instructionsLink;
+    this.warrantyLink = productDetails.warrantyLink;
+  }
+
+  extraInfoHTML(){
+    return `
+      <a href="${this.instructionsLink}" target="_blank">Instructions</a>
+      <a href="${this.warrantyLink}" target="_blank">Warranty</a>
     `;
   }
 }
@@ -66,6 +86,8 @@ export function loadProductsFetch() {
     products = productsData.map((productDetails) => {
       if (productDetails.type === 'clothing'){
         return new Clothing(productDetails);
+      } else if(productDetails.type === 'Appliance'){
+        return new Appliance(productDetails);
       }
       return new Product(productDetails);
     });
@@ -83,17 +105,27 @@ export function loadProductsFetch() {
 });*/
 
 export function loadProducts(fun) {
+  const applianceList = ['2 Slot Toaster - Black'];
   const xhr = new XMLHttpRequest();
 
   xhr.addEventListener('load', () => {
     products = JSON.parse(xhr.response).map((productDetails) => {
       if (productDetails.type === 'clothing'){
         return new Clothing(productDetails);
+      } else if(applianceList.includes(productDetails.name)) {
+        productDetails.type = 'Appliance';
+        productDetails.instructionsLink = 'images/appliance-instructions.png';
+        productDetails.warrantyLink = 'images/appliance-warranty.png';
+        return new Appliance(productDetails);
       }
+      /*else if(productDetails.type === 'Appliance'){
+        return new Appliance(productDetails);
+      }*/
       return new Product(productDetails);
     });
     
     console.log('load products');
+    console.log(products);
 
     if (!(typeof fun === 'undefined')) {
       fun();
@@ -107,6 +139,7 @@ export function loadProducts(fun) {
 
   xhr.open('GET', 'https://supersimplebackend.dev/products');
   xhr.send();
+  //console.log(products);
 }
 //loadProducts();
 

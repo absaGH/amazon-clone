@@ -1,5 +1,4 @@
-//import {cart, calculateCartQuantity} from '../../data/cart.js';
-import {cart} from '../../data/cart-class.js';
+import {cart, calculateCartQuantity, resetCart} from '../../data/cart.js';
 import { getProduct } from '../../data/products.js';
 import { getDeliveryOption } from '../../data/deliveryOptions.js';
 import {formatCurrency} from '../utils/money.js';
@@ -9,15 +8,13 @@ export function renderPaymentSummary() {
     let productPriceCents = 0;
     let shippingPriceCents = 0;
 
-    //cart.forEach((cartItem) => {
-      cart.cartItems.forEach((cartItem) => {
+    cart.forEach((cartItem) => {
         const product = getProduct(cartItem.productId);
         productPriceCents += product.priceCents * cartItem.quantity
 
         const deliveryOption = getDeliveryOption(cartItem.deliveryOptionId);
-        shippingPriceCents += deliveryOption.priceCents;
-      });    
-    //});
+        shippingPriceCents += deliveryOption.priceCents
+    });
 
     const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
     const taxCents = totalBeforeTaxCents * 0.1;
@@ -29,7 +26,7 @@ export function renderPaymentSummary() {
           </div>
 
           <div class="payment-summary-row">
-            <div>Items (${cart.calculateCartQuantity()}):</div>
+            <div>Items (${calculateCartQuantity()}):</div>
             <div class="payment-summary-money">
                 $${formatCurrency(productPriceCents)}
             </div>
@@ -90,6 +87,8 @@ export function renderPaymentSummary() {
         } catch(error) {
             console.log('Unexpected error. Try again later.');
         }
+
+        resetCart();
        
         window.location.href = 'orders.html';
       });

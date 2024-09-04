@@ -124,3 +124,40 @@ export function loadCart(fun) {
   xhr.open('GET', 'https://supersimplebackend.dev/cart');
   xhr.send();
 }
+
+export async function loadCartFetch() {
+
+    const response = await fetch(
+        'https://supersimplebackend.dev/cart'
+      );
+      console.log('inside loadCartFetch');
+      //console.log(response.text());
+      if (!response.ok) {
+        throw new Error(`HTTP error status: ${response.status}`);
+      }
+
+    const text = await response.text();
+  
+ 
+  return text;  
+}
+
+
+// Extra feature: make the cart empty after creating an order.
+export function resetCart() {
+  cart = [];
+  saveToStorage();
+}
+
+/*export async function loadCartFetch(fun) {
+  console.log('inside loadCartFetch');
+  /*const response = await loadCart(fun);
+  response.then((data) => {
+		return data.text();
+	}).then((data) => {
+    console.log(data);
+  })
+  cart = await loadCart(fun);
+  console.log(cart);
+  return cart;
+}*/
